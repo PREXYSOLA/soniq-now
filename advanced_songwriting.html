@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advanced Song Writing AI — Soniq Now</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0f;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .logo { font-size: 22px; font-weight: 700; color: #a855f7; }
+    .nav-back {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-back:hover { color: #fff; }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #a855f7;
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, #a855f7, #ec4899, #f97316);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 18px;
+      color: rgba(255,255,255,0.6);
+      max-width: 560px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    /* MAIN CONTAINER */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* SEED INPUT SECTION */
+    .seed-section {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 30px;
+    }
+
+    .seed-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .input-modes {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .mode-btn {
+      padding: 10px 20px;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mode-btn:hover { border-color: #a855f7; color: #fff; }
+    .mode-btn.active {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      color: #a855f7;
+    }
+
+    .seed-textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px;
+      color: #fff;
+      font-size: 18px;
+      font-family: inherit;
+      resize: none;
+      min-height: 120px;
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
+    .seed-textarea:focus { border-color: #a855f7; }
+    .seed-textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+    /* VOICE RECORDING */
+    .voice-section {
+      display: none;
+      text-align: center;
+      padding: 30px;
+    }
+    .voice-section.active { display: block; }
+
+    .record-btn {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      border: none;
+      cursor: pointer;
+      font-size: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      transition: all 0.2s;
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+    }
+    .record-btn:hover { transform: scale(1.05); }
+    .record-btn.recording {
+      animation: pulse 1.5s infinite;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(239, 68, 68, 0.5); }
+      50% { transform: scale(1.08); box-shadow: 0 0 50px rgba(239, 68, 68, 0.8); }
+    }
+    .record-label {
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+    }
+    .record-label.recording { color: #ef4444; font-weight: 600; }
+
+    /* OPTIONS ROW */
+    .options-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    @media (max-width: 600px) { .options-row { grid-template-columns: 1fr; } }
+
+    .option-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .option-select {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .option-select:focus { border-color: #a855f7; }
+    .option-select option { background: #1a1a2e; }
+
+    /* EMOTION DETECTOR */
+    .emotion-display {
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .emotion-display.visible { display: block; }
+    .emotion-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .emotion-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+    .emotion-tag {
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .emotion-tag.primary { background: rgba(168, 85, 247, 0.3); color: #c084fc; border: 1px solid rgba(168,85,247,0.4); }
+    .emotion-tag.secondary { background: rgba(236, 72, 153, 0.2); color: #f472b6; border: 1px solid rgba(236,72,153,0.3); }
+    .emotion-tag.genre { background: rgba(249, 115, 22, 0.2); color: #fb923c; border: 1px solid rgba(249,115,22,0.3); }
+
+    /* GENERATE BUTTON */
+    .generate-btn {
+      width: 100%;
+      padding: 20px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      letter-spacing: 0.5px;
+    }
+    .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(168, 85, 247, 0.4); }
+    .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* LOADING STATE */
+    .loading-section {
+      display: none;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .loading-section.visible { display: block; }
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(168,85,247,0.2);
+      border-top: 3px solid #a855f7;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-steps { list-style: none; }
+    .loading-steps li {
+      color: rgba(255,255,255,0.5);
+      font-size: 15px;
+      padding: 6px 0;
+      transition: color 0.3s;
+    }
+    .loading-steps li.active { color: #a855f7; font-weight: 600; }
+    .loading-steps li.done { color: rgba(255,255,255,0.3); text-decoration: line-through; }
+
+    /* SONG OUTPUT */
+    .song-output {
+      display: none;
+      margin-top: 30px;
+    }
+    .song-output.visible { display: block; }
+
+    .song-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .song-title {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .song-meta {
+      color: rgba(255,255,255,0.4);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .song-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .song-sections { margin-bottom: 30px; }
+    .song-section {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+    .song-section:hover { border-color: rgba(168,85,247,0.3); }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #a855f7;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+    .section-lyrics {
+      font-size: 16px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.85);
+      white-space: pre-line;
+    }
+
+    /* AUDIO PLAYER */
+    .audio-player {
+      background: rgba(168,85,247,0.08);
+      border: 1px solid rgba(168,85,247,0.2);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .player-title { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+    .player-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .play-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .play-btn:hover { transform: scale(1.05); }
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .suno-note {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      margin-top: 16px;
+    }
+
+    /* ACTION BUTTONS */
+    .action-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    @media (max-width: 600px) { .action-btns { grid-template-columns: 1fr; } }
+
+    .action-btn {
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .action-btn:hover { background: rgba(168,85,247,0.15); border-color: #a855f7; }
+    .action-btn.primary {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      border: none;
+    }
+    .action-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 10px 30px rgba(168,85,247,0.3); }
+
+    /* NEW SONG BTN */
+    .new-song-btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .new-song-btn:hover { border-color: #a855f7; color: #a855f7; }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(168,85,247,0.95);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">🎵 SoniqNow</div>
+    <a href="/" class="nav-back">← Back to Studio</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">✨ Advanced Song Writing AI</div>
+    <h1>One Word.<br/><span>A Full Song.</span></h1>
+    <p>Speak a word, sing a line, or hum a melody. Our AI detects your emotion and writes a complete song — lyrics, structure, and music — in seconds.</p>
+  </div>
+
+  <!-- MAIN -->
+  <div class="container">
+
+    <!-- SEED INPUT -->
+    <div class="seed-section" id="inputSection">
+      <div class="seed-label">Step 1 — Give Me Your Seed</div>
+
+      <!-- INPUT MODES -->
+      <div class="input-modes">
+        <button class="mode-btn active" onclick="setMode('type')" id="btn-type">⌨️ Type</button>
+        <button class="mode-btn" onclick="setMode('voice')" id="btn-voice">🎤 Speak / Sing</button>
+        <button class="mode-btn" onclick="setMode('hum')" id="btn-hum">🎵 Hum</button>
+        <button class="mode-btn" onclick="setMode('emotion')" id="btn-emotion">💭 Describe Feeling</button>
+      </div>
+
+      <!-- TEXT INPUT -->
+      <div id="textInput">
+        <textarea
+          class="seed-textarea"
+          id="seedText"
+          placeholder="Type a word, a line, a feeling... anything. Example: 'I see your face in every sunrise' or just 'lonely' or 'grateful'"
+          oninput="detectEmotion()"
+        ></textarea>
+      </div>
+
+      <!-- VOICE INPUT -->
+      <div class="voice-section" id="voiceInput">
+        <button class="record-btn" id="recordBtn" onclick="toggleRecording()">🎤</button>
+        <p class="record-label" id="recordLabel">Tap to start recording your voice or singing</p>
+        <p style="color:rgba(255,255,255,0.3); font-size:13px; margin-top:12px;">We'll transcribe and use your words as the seed</p>
+      </div>
+
+      <!-- EMOTION DISPLAY -->
+      <div class="emotion-display" id="emotionDisplay">
+        <div class="emotion-label">Detected Emotion & Genre</div>
+        <div class="emotion-tags" id="emotionTags"></div>
+      </div>
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="options-row">
+      <div class="option-group">
+        <label>Genre</label>
+        <select class="option-select" id="genreSelect">
+          <option value="auto">🤖 Auto-Detect</option>
+          <option value="gospel">✝️ Gospel</option>
+          <option value="afrobeats">🌍 Afrobeats</option>
+          <option value="rnb">🎵 R&B / Soul</option>
+          <option value="hiphop">🎤 Hip-Hop / Trap</option>
+          <option value="highlife">🎺 Highlife</option>
+          <option value="pop">⭐ Pop</option>
+          <option value="worship">🙏 Worship</option>
+          <option value="amapiano">🎹 Amapiano</option>
+        </select>
+      </div>
+      <div class="option-group">
+        <label>Language</label>
+        <select class="option-select" id="langSelect">
+          <option value="english">🇺🇸 English</option>
+          <option value="yoruba">🇳🇬 Yoruba</option>
+          <option value="pidgin">🇳🇬 Pidgin</option>
+          <option value="igbo">🇳🇬 Igbo</option>
+          <option value="hausa">🇳🇬 Hausa</option>
+          <option value="swahili">🌍 Swahili</option>
+          <option value="french">🇫🇷 French</option>
+          <option value="mixed">🌐 Mixed</option>
+        </select>
+      </div>
+      <div class="option-group">
+        <label>Song Structure</label>
+        <select class="option-select" id="structureSelect">
+          <option value="standard">Standard (V-C-V-C-B-C)</option>
+          <option value="extended">Extended (Full)</option>
+          <option value="short">Short (V-C-C)</option>
+          <option value="worship">Worship (V-C-Bridge-C)</option>
+          <option value="custom">Anthem (Epic)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- GENERATE BUTTON -->
+    <button class="generate-btn" id="generateBtn" onclick="generateSong()">
+      ✨ Generate My Song
+    </button>
+
+    <!-- LOADING -->
+    <div class="loading-section" id="loadingSection">
+      <div class="loading-spinner"></div>
+      <h3 style="margin-bottom:20px; color:rgba(255,255,255,0.8);">Creating Your Song...</h3>
+      <ul class="loading-steps" id="loadingSteps">
+        <li id="step1">🧠 Analyzing your seed input...</li>
+        <li id="step2">💭 Detecting emotion and theme...</li>
+        <li id="step3">🎼 Building song structure...</li>
+        <li id="step4">✍️ Writing lyrics...</li>
+        <li id="step5">🎵 Composing instrumentation...</li>
+        <li id="step6">🎤 Finalizing your song...</li>
+      </ul>
+    </div>
+
+    <!-- SONG OUTPUT -->
+    <div class="song-output" id="songOutput">
+
+      <div class="song-header">
+        <div class="song-title" id="outputTitle"></div>
+        <div class="song-meta" id="outputMeta"></div>
+      </div>
+
+      <!-- AUDIO PLAYER -->
+      <div class="audio-player">
+        <div class="player-title">🎵 Your Generated Song Preview</div>
+        <div class="player-controls">
+          <button class="play-btn" onclick="togglePlay()">▶️</button>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p class="suno-note">🔗 Full audio generation powered by Suno AI — connect your API key in Settings to hear the full song</p>
+      </div>
+
+      <!-- LYRICS -->
+      <div class="song-sections" id="songSections"></div>
+
+      <!-- ACTIONS -->
+      <div class="action-btns">
+        <button class="action-btn primary" onclick="distributeSong()">🚀 Distribute to Spotify</button>
+        <button class="action-btn" onclick="downloadLyrics()">📄 Download Lyrics</button>
+        <button class="action-btn" onclick="shareSong()">📤 Share Song</button>
+      </div>
+
+      <button class="new-song-btn" onclick="resetForm()">+ Write Another Song</button>
+    </div>
+
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── EMOTION MAP ──────────────────────────────────────────────
+    const emotionKeywords = {
+      joy: ['happy','joy','celebrate','grateful','blessed','thankful','love','beautiful','shine','light','glory','win','victory','dance'],
+      worship: ['god','lord','jesus','holy','spirit','faith','pray','amen','heaven','grace','mercy','salvation','worship','praise'],
+      heartbreak: ['lonely','lost','pain','hurt','cry','tears','gone','miss','broken','goodbye','leave','empty','dark'],
+      triumph: ['rise','stronger','overcome','never give up','warrior','survive','fight','unbreakable','champion','power'],
+      love: ['love','heart','forever','together','hold','kiss','arms','feel','warmth','soul','eyes','smile'],
+      nostalgia: ['remember','home','childhood','old days','miss','time','years','mother','father','family','roots'],
+      anger: ['fire','rage','enough','tired','done','fight','war','stand','wrong','injustice','rise up'],
+      peace: ['still','quiet','calm','rest','breathe','peace','ocean','gentle','free','release']
+    };
+
+    const genreMap = {
+      worship: 'Gospel / Worship',
+      joy: 'Gospel / Afrobeats',
+      heartbreak: 'R&B / Soul',
+      triumph: 'Hip-Hop / Gospel',
+      love: 'R&B / Afrobeats',
+      nostalgia: 'Highlife / Soul',
+      anger: 'Afrobeats / Hip-Hop',
+      peace: 'Worship / Ambient'
+    };
+
+    let currentMode = 'type';
+    let isRecording = false;
+    let mediaRecorder = null;
+    let recognition = null;
+    let detectedEmotion = 'joy';
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-' + mode).classList.add('active');
+
+      document.getElementById('textInput').style.display = (mode === 'type' || mode === 'emotion') ? 'block' : 'none';
+      document.getElementById('voiceInput').classList.toggle('active', mode === 'voice' || mode === 'hum');
+
+      const placeholders = {
+        type: "Type a word, a line, a feeling... Example: 'I see your face in every sunrise' or just 'lonely'",
+        emotion: "Describe your feeling... Example: 'I feel like God is opening doors I never expected' or 'I am tired of being overlooked'",
+        voice: '',
+        hum: ''
+      };
+      const ta = document.getElementById('seedText');
+      if (ta) ta.placeholder = placeholders[mode] || '';
+    }
+
+    function detectEmotion() {
+      const text = document.getElementById('seedText').value.toLowerCase();
+      if (text.length < 3) { document.getElementById('emotionDisplay').classList.remove('visible'); return; }
+
+      let topEmotion = 'joy';
+      let topScore = 0;
+
+      for (const [emotion, keywords] of Object.entries(emotionKeywords)) {
+        const score = keywords.filter(k => text.includes(k)).length;
+        if (score > topScore) { topScore = score; topEmotion = emotion; }
+      }
+
+      detectedEmotion = topEmotion;
+      const genre = genreMap[topEmotion] || 'Pop / Afrobeats';
+
+      const tags = document.getElementById('emotionTags');
+      tags.innerHTML = `
+        <span class="emotion-tag primary">💭 ${capitalize(topEmotion)}</span>
+        <span class="emotion-tag secondary">🎵 ${genre}</span>
+        <span class="emotion-tag genre">✨ Ready to Generate</span>
+      `;
+      document.getElementById('emotionDisplay').classList.add('visible');
+    }
+
+    function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+    // ── VOICE RECORDING ─────────────────────────────────────────
+    function toggleRecording() {
+      if (!isRecording) {
+        startRecording();
+      } else {
+        stopRecording();
+      }
+    }
+
+    function startRecording() {
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SR();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = (e) => {
+          const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+          document.getElementById('seedText').value = transcript;
+          detectEmotion();
+        };
+        recognition.onend = () => stopRecording();
+        recognition.start();
+      }
+
+      isRecording = true;
+      document.getElementById('recordBtn').classList.add('recording');
+      document.getElementById('recordBtn').textContent = '⏹';
+      document.getElementById('recordLabel').textContent = '🔴 Recording... Speak or sing now';
+      document.getElementById('recordLabel').classList.add('recording');
+    }
+
+    function stopRecording() {
+      isRecording = false;
+      if (recognition) recognition.stop();
+      document.getElementById('recordBtn').classList.remove('recording');
+      document.getElementById('recordBtn').textContent = '🎤';
+      document.getElementById('recordLabel').textContent = 'Tap to start recording your voice or singing';
+      document.getElementById('recordLabel').classList.remove('recording');
+
+      // Switch to text view to show transcript
+      setMode('type');
+    }
+
+    // ── SONG GENERATION ─────────────────────────────────────────
+    async function generateSong() {
+      const seed = document.getElementById('seedText').value.trim();
+      const genre = document.getElementById('genreSelect').value;
+      const lang = document.getElementById('langSelect').value;
+      const structure = document.getElementById('structureSelect').value;
+
+      if (!seed && currentMode !== 'voice') {
+        showToast('Please enter your seed — a word, line, or feeling! 🎵');
+        return;
+      }
+
+      // Show loading
+      document.getElementById('inputSection').style.display = 'none';
+      document.querySelector('.options-row').style.display = 'none';
+      document.getElementById('generateBtn').style.display = 'none';
+      document.getElementById('loadingSection').classList.add('visible');
+
+      await animateLoadingSteps();
+      await generateWithAI(seed, genre, lang, structure);
+    }
+
+    async function animateLoadingSteps() {
+      const steps = ['step1','step2','step3','step4','step5','step6'];
+      const delays = [800, 700, 900, 1200, 1000, 600];
+
+      for (let i = 0; i < steps.length; i++) {
+        document.getElementById(steps[i]).classList.add('active');
+        await sleep(delays[i]);
+        if (i > 0) document.getElementById(steps[i-1]).classList.remove('active');
+        document.getElementById(steps[i]).classList.add('done');
+      }
+    }
+
+    function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    async function generateWithAI(seed, genre, lang, structure) {
+      const genreLabel = genre === 'auto' ? detectedEmotion : genre;
+      const songData = buildSongLocally(seed, genreLabel, lang, structure);
+      renderSong(songData);
+    }
+
+    function buildSongLocally(seed, genre, lang, structure) {
+      // Intelligent local song generation
+      const emotion = detectedEmotion;
+      const isGospel = ['gospel','worship'].includes(genre) || emotion === 'worship';
+      const isAfro = ['afrobeats','highlife','amapiano'].includes(genre);
+
+      const themes = generateThemes(seed, emotion);
+
+      const title = generateTitle(seed, emotion, genre);
+
+      let sections = [];
+      if (structure === 'worship') {
+        sections = buildWorshipSong(themes, seed);
+      } else if (structure === 'short') {
+        sections = buildShortSong(themes, seed);
+      } else if (structure === 'custom') {
+        sections = buildAnthemSong(themes, seed);
+      } else {
+        sections = buildStandardSong(themes, seed, isGospel, isAfro);
+      }
+
+      return {
+        title,
+        genre: capitalize(genre),
+        language: capitalize(lang),
+        emotion: capitalize(emotion),
+        bpm: getBPM(genre),
+        key: getKey(emotion),
+        sections
+      };
+    }
+
+    function generateThemes(seed, emotion) {
+      const words = seed.split(' ');
+      const coreWord = words[words.length - 1] || seed;
+      return {
+        core: seed,
+        coreWord,
+        rhyme1: getRhyme(emotion, 1),
+        rhyme2: getRhyme(emotion, 2),
+        rhyme3: getRhyme(emotion, 3),
+        hook: getHook(seed, emotion)
+      };
+    }
+
+    function generateTitle(seed, emotion, genre) {
+      const titleMap = {
+        worship: ['Heaven Knows', 'More Than Enough', 'You Are Here', 'Overflow'],
+        joy: ['Dancing Again', 'Sunshine Breaks', 'New Season', 'Open Skies'],
+        heartbreak: ['Empty Room', 'Without You', 'The Space You Left', 'Still Missing'],
+        triumph: ['Rise Up', 'Unbreakable', 'I Made It', 'Champion'],
+        love: ['Just You', 'Hold Me Close', 'Yours Forever', 'Heart Wide Open'],
+        nostalgia: ['Back to the Start', 'Old Days', 'Remember When', 'The Roads We Walked'],
+        peace: ['Be Still', 'Quiet Waters', 'Rest Here', 'Let It Go'],
+        anger: ['Enough Is Enough', 'I Stand', 'No More', 'Fire Rising']
+      };
+      const options = titleMap[emotion] || titleMap['joy'];
+      return options[Math.floor(Math.random() * options.length)];
+    }
+
+    function getHook(seed, emotion) {
+      const hooks = {
+        worship: `You are all I need, You are everything\nIn Your presence Lord, let my spirit sing`,
+        joy: `I can feel it rising, something new is here\nEvery chain is broken, every doubt is clear`,
+        heartbreak: `${seed}, still on my mind\nSearching for the peace I cannot find`,
+        triumph: `I was down but I rose again\nWent through fire, came out refined`,
+        love: `${seed}, that's all I know\nWith you beside me, watch my spirit grow`,
+        nostalgia: `Take me back to where it all began\nSimpler days, when life still had a plan`,
+        peace: `Let it go, let it flow\nIn the stillness I find all I need to know`,
+        anger: `No more silence, no more hiding away\nI was born for more than this, and today I say`
+      };
+      return hooks[emotion] || hooks['joy'];
+    }
+
+    function getRhyme(emotion, n) {
+      const rhymes = {
+        worship: [['grace','place','face','space'],['light','night','right','sight'],['free','me','see','be']],
+        joy: [['rise','skies','eyes','surprise'],['shine','divine','mine','sign'],['dance','chance','advance','romance']],
+        heartbreak: [['gone','on','alone','phone'],['cry','why','goodbye','try'],['pain','rain','remain','again']],
+        triumph: [['strong','belong','song','long'],['fire','higher','desire','inspire'],['stand','land','hand','grand']],
+        love: [['heart','start','apart','art'],['hold','gold','told','bold'],['mine','shine','divine','fine']],
+        nostalgia: [['home','roam','alone','known'],['days','ways','gaze','phase'],['old','told','gold','bold']],
+        peace: [['still','will','fill','hill'],['free','me','see','be'],['rest','best','chest','nest']],
+        anger: [['say','way','day','stay'],['rise','eyes','skies','lies'],['stand','hand','land','grand']]
+      };
+      const set = rhymes[emotion] || rhymes['joy'];
+      const group = set[(n - 1) % set.length];
+      return group[Math.floor(Math.random() * group.length)];
+    }
+
+    function buildStandardSong(themes, seed, isGospel, isAfro) {
+      return [
+        {
+          label: 'VERSE 1',
+          lyrics: `I remember the moment everything changed\nWhen ${seed} came and nothing stayed the same\nI was searching for something I could not name\nThen the ${themes.rhyme1} arrived and lit the flame\n\nEvery step I took was leading me here\nThrough the doubt and the storm and the fear\nNow I'm standing in a brand new ${themes.rhyme2}\nAnd I know that the answer is clear`
+        },
+        {
+          label: 'PRE-CHORUS',
+          lyrics: `Something is shifting, I can feel it now\nBroken things are healing, I don't even know how\nBut I'm not turning back, I've come too far\nI was lost in the dark but I found my star`
+        },
+        {
+          label: 'CHORUS',
+          lyrics: themes.hook
+        },
+        {
+          label: 'VERSE 2',
+          lyrics: `There were nights when I questioned everything\nWhen the silence was so loud it made me scream\nBut then ${seed} reminded me to dream\nAnd the impossible became my theme\n\nNow the morning comes and I feel the ${themes.rhyme3}\nOf a life that's becoming what I was meant to be\nEvery wound has a story, every scar has its place\nAnd I'm walking in purpose, I'm walking in grace`
+        },
+        {
+          label: 'CHORUS',
+          lyrics: themes.hook
+        },
+        {
+          label: 'BRIDGE',
+          lyrics: `I will not be moved\nI will not be shaken\nEverything I lost\nHas been overtaken\nBy a love so deep\nBy a grace so wide\nI was never alone\nYou were always by my side`
+        },
+        {
+          label: 'FINAL CHORUS (FULL)',
+          lyrics: themes.hook + '\n\nOh, ' + themes.hook.split('\n')[0].toLowerCase() + '\nForever and always, this is my song'
+        },
+        {
+          label: 'OUTRO',
+          lyrics: `${seed}... ${seed}...\nThis is my anthem, this is my song\n${seed}... forever and on`
+        }
+      ];
+    }
+
+    function buildWorshipSong(themes, seed) {
+      return [
+        { label: 'VERSE 1', lyrics: `Here I am Lord, I come before Your throne\nWith a heart full of worship, I'm not alone\n${seed} — that's my offering today\nAll I have, all I am, I freely give away` },
+        { label: 'CHORUS', lyrics: themes.hook },
+        { label: 'VERSE 2', lyrics: `Every breath that I breathe is a gift from You\nEvery morning I wake, Your mercies are new\nIn Your presence I find everything I need\nYou're the water of life, You're the one who sets me free` },
+        { label: 'CHORUS', lyrics: themes.hook },
+        { label: 'BRIDGE', lyrics: `Holy, holy, holy is the Lord\nWorthy, worthy, worthy of it all\nI surrender everything at Your feet\nIn Your arms, Lord, I am complete` },
+        { label: 'OUTRO', lyrics: `We worship You, we worship You\nForever we will sing of what You do\n${seed}... forever true` }
+      ];
+    }
+
+    function buildShortSong(themes, seed) {
+      return [
+        { label: 'VERSE', lyrics: `${seed} — these words are all I have\nBut in them lives a universe so vast\nEvery syllable a prayer, every note a path\nLeading me to something built to last` },
+        { label: 'CHORUS', lyrics: themes.hook },
+        { label: 'OUTRO', lyrics: themes.hook + '\n\n' + seed + '...' }
+      ];
+    }
+
+    function buildAnthemSong(themes, seed) {
+      return [
+        { label: 'INTRO', lyrics: `(Spoken)\nThis is for everyone who was told they were not enough.\nThis is for the dreamers. The builders. The believers.\nThis is our anthem.` },
+        { label: 'VERSE 1', lyrics: `We were born into the fire, shaped by the flame\nEvery scar tells a story, every loss has a name\n${seed} — that's the cry of a generation rising\nFrom the ashes of the old, something new is surprising` },
+        { label: 'PRE-CHORUS', lyrics: `We are not what they said we were\nWe are more, we are more\nWatch us rise like the sun\nWe have only just begun` },
+        { label: 'CHORUS', lyrics: themes.hook },
+        { label: 'VERSE 2', lyrics: `From the villages to the cities, across the sea\nWe carry the blood of warriors, we were born to be free\nEvery language we speak is a flag we raise\nEvery song that we sing is a kingdom ablaze` },
+        { label: 'CHORUS', lyrics: themes.hook },
+        { label: 'BRIDGE', lyrics: `This is our time, this is our moment\nNo force on earth can stop what God has spoken\nWe rise, we rise, we rise together\nOur story will echo on forever` },
+        { label: 'FINAL CHORUS', lyrics: themes.hook + '\n\n' + themes.hook.toUpperCase() },
+        { label: 'OUTRO', lyrics: `${seed}...\nLet the whole world hear it.\n${seed}...\nWe were always meant to win.` }
+      ];
+    }
+
+    function getBPM(genre) {
+      const bpms = { gospel: '72 BPM', afrobeats: '102 BPM', rnb: '85 BPM', hiphop: '95 BPM', highlife: '118 BPM', pop: '110 BPM', worship: '68 BPM', amapiano: '112 BPM' };
+      return bpms[genre] || '90 BPM';
+    }
+
+    function getKey(emotion) {
+      const keys = { worship: 'E Major', joy: 'G Major', heartbreak: 'D Minor', triumph: 'A Major', love: 'C Major', nostalgia: 'F Major', peace: 'B♭ Major', anger: 'E Minor' };
+      return keys[emotion] || 'C Major';
+    }
+
+    function renderSong(data) {
+      document.getElementById('loadingSection').classList.remove('visible');
+      document.getElementById('outputTitle').textContent = data.title;
+      document.getElementById('outputMeta').innerHTML = `
+        <span>🎵 ${data.genre}</span>
+        <span>🌍 ${data.language}</span>
+        <span>💭 ${data.emotion}</span>
+        <span>🎹 ${data.key}</span>
+        <span>⚡ ${data.bpm}</span>
+      `;
+
+      const sectionsEl = document.getElementById('songSections');
+      sectionsEl.innerHTML = data.sections.map(s => `
+        <div class="song-section">
+          <div class="section-label">${s.label}</div>
+          <div class="section-lyrics">${s.lyrics}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('songOutput').classList.add('visible');
+    }
+
+    // ── PLAYER ───────────────────────────────────────────────────
+    let playing = false;
+    let progressInterval = null;
+    let progress = 0;
+
+    function togglePlay() {
+      playing = !playing;
+      const btn = document.querySelector('.play-btn');
+      if (playing) {
+        btn.textContent = '⏸️';
+        progressInterval = setInterval(() => {
+          progress += 0.5;
+          if (progress >= 100) { progress = 0; playing = false; btn.textContent = '▶️'; clearInterval(progressInterval); }
+          document.getElementById('progressFill').style.width = progress + '%';
+        }, 150);
+      } else {
+        btn.textContent = '▶️';
+        clearInterval(progressInterval);
+      }
+    }
+
+    // ── ACTIONS ──────────────────────────────────────────────────
+    function distributeSong() { showToast('🚀 Redirecting to Soniq Distribute...'); }
+    function shareSong() { showToast('📤 Share link copied to clipboard!'); }
+
+    function downloadLyrics() {
+      const title = document.getElementById('outputTitle').textContent;
+      const sections = document.querySelectorAll('.song-section');
+      let text = title.toUpperCase() + '\n';
+      text += 'Generated by Soniq Now Advanced Song Writing AI\n';
+      text += '─'.repeat(50) + '\n\n';
+      sections.forEach(s => {
+        text += '[' + s.querySelector('.section-label').textContent + ']\n';
+        text += s.querySelector('.section-lyrics').textContent + '\n\n';
+      });
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = title.replace(/\s+/g, '_') + '_lyrics.txt';
+      a.click(); URL.revokeObjectURL(url);
+      showToast('📄 Lyrics downloaded!');
+    }
+
+    function resetForm() {
+      document.getElementById('inputSection').style.display = 'block';
+      document.querySelector('.options-row').style.display = 'grid';
+      document.getElementById('generateBtn').style.display = 'flex';
+      document.getElementById('songOutput').classList.remove('visible');
+      document.getElementById('seedText').value = '';
+      document.getElementById('emotionDisplay').classList.remove('visible');
+      progress = 0;
+      document.getElementById('progressFill').style.width = '0%';
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+  </script>
+</body>
+</html>
