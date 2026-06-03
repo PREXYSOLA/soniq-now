@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soniq Now — Built for African Artists</title>
+  <meta name="description" content="Distribute your music to 150+ stores, mix in Dolby Atmos, edit your videos, and keep 100% of your royalties. The first platform built for African artists.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #F5C842;
+      --gold-dark: #D4A800;
+      --green: #00E676;
+      --bg: #080810;
+      --surface: #0F0F1A;
+      --surface2: #161625;
+      --border: rgba(255,255,255,0.08);
+      --text: #FFFFFF;
+      --muted: rgba(255,255,255,0.55);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(8,8,16,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #F5C842, #FF6B35);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .logo span { color: white; -webkit-text-fill-color: white; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: white; }
+    .nav-cta {
+      background: var(--gold); color: #000;
+      border: none; padding: 10px 22px;
+      border-radius: 8px; font-weight: 700; font-size: 0.9rem;
+      cursor: pointer; text-decoration: none; transition: all 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold-dark); transform: translateY(-1px); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(245,200,66,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .founding-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,200,66,0.12);
+      border: 1px solid rgba(245,200,66,0.3);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-size: 0.82rem; font-weight: 600; color: var(--gold);
+      margin-bottom: 28px;
+      animation: pulse-border 2s infinite;
+    }
+    @keyframes pulse-border {
+      0%, 100% { border-color: rgba(245,200,66,0.3); }
+      50% { border-color: rgba(245,200,66,0.7); }
+    }
+    .founding-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold);
+      animation: blink 1.2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      max-width: 900px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, #F5C842, #FF6B35);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+      max-width: 600px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+
+    /* FOUNDING OFFER CARD */
+    .founding-card {
+      background: linear-gradient(135deg, rgba(245,200,66,0.08), rgba(255,107,53,0.05));
+      border: 1px solid rgba(245,200,66,0.25);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 700px;
+      width: 100%;
+      margin: 0 auto 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .founding-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #F5C842, transparent);
+    }
+    .founding-card h2 {
+      font-size: 1.5rem; font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .founding-card .subtitle {
+      color: var(--muted); font-size: 0.9rem; margin-bottom: 28px;
+    }
+    .perks-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; margin-bottom: 32px;
+      text-align: left;
+    }
+    .perk {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.88rem; color: rgba(255,255,255,0.85);
+    }
+    .perk-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+    .counter-row {
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      margin-bottom: 28px;
+    }
+    .counter-bar {
+      flex: 1; height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 100px; overflow: hidden;
+    }
+    .counter-fill {
+      height: 100%; width: 18%;
+      background: linear-gradient(90deg, #F5C842, #FF6B35);
+      border-radius: 100px;
+      animation: fill-bar 2s ease-out forwards;
+    }
+    @keyframes fill-bar { from{width:0} to{width:18%} }
+    .counter-text { font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
+    .counter-text strong { color: var(--gold); }
+
+    .cta-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: linear-gradient(135deg, #F5C842, #FF6B35);
+      color: #000; border: none;
+      padding: 16px 36px; border-radius: 12px;
+      font-weight: 800; font-size: 1rem;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s; display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,200,66,0.35); }
+    .btn-secondary {
+      background: transparent;
+      color: white; border: 1px solid var(--border);
+      padding: 16px 36px; border-radius: 12px;
+      font-weight: 600; font-size: 1rem;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s; display: inline-block;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+
+    .no-card { font-size: 0.78rem; color: var(--muted); margin-top: 14px; }
+
+    /* SOCIAL PROOF */
+    .proof-strip {
+      display: flex; align-items: center; gap: 32px;
+      flex-wrap: wrap; justify-content: center;
+      padding: 20px 40px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 80px;
+    }
+    .proof-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); }
+    .proof-item strong { color: white; }
+    .proof-divider { width: 1px; height: 20px; background: var(--border); }
+
+    /* PILLARS */
+    section { padding: 80px 24px; }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 3px;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 16px; text-align: center;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900; letter-spacing: -1px;
+      text-align: center; margin-bottom: 16px;
+    }
+    .section-sub {
+      color: var(--muted); text-align: center;
+      max-width: 560px; margin: 0 auto 56px;
+      font-size: 1rem;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .pillar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .pillar-card:hover {
+      border-color: rgba(245,200,66,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .pillar-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .pillar-card:hover::after { opacity: 1; }
+    .pillar-icon {
+      font-size: 2.2rem; margin-bottom: 16px;
+      display: block;
+    }
+    .pillar-card h3 {
+      font-size: 1.2rem; font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .pillar-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 16px; }
+    .pillar-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 10px;
+      font-size: 0.72rem; color: var(--muted);
+    }
+
+    /* DISTRIBUTION */
+    .platforms-section {
+      background: var(--surface);
+      border-radius: 24px;
+      padding: 56px;
+      max-width: 1100px; margin: 0 auto;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .platforms-grid {
+      display: flex; flex-wrap: wrap; gap: 16px;
+      justify-content: center; margin-top: 40px;
+    }
+    .platform-pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-size: 0.85rem; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      transition: all 0.2s;
+    }
+    .platform-pill:hover { border-color: rgba(245,200,66,0.4); color: var(--gold); }
+    .platform-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* HOW IT WORKS */
+    .steps { display: flex; flex-direction: column; gap: 0; max-width: 700px; margin: 0 auto; }
+    .step {
+      display: flex; gap: 24px; align-items: flex-start;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(245,200,66,0.15), rgba(255,107,53,0.1));
+      border: 1px solid rgba(245,200,66,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 900; color: var(--gold);
+      flex-shrink: 0;
+    }
+    .step-content h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .step-content p { color: var(--muted); font-size: 0.9rem; }
+
+    /* PRICING */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 900px; margin: 0 auto;
+    }
+    .price-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      position: relative; overflow: hidden;
+    }
+    .price-card.featured {
+      border-color: rgba(245,200,66,0.4);
+      background: linear-gradient(135deg, rgba(245,200,66,0.06), rgba(255,107,53,0.04));
+    }
+    .price-card.featured::before {
+      content: 'MOST POPULAR';
+      position: absolute; top: 16px; right: 16px;
+      background: var(--gold); color: #000;
+      font-size: 0.65rem; font-weight: 800; letter-spacing: 1px;
+      padding: 4px 10px; border-radius: 100px;
+    }
+    .founding-free {
+      position: absolute; top: 16px; right: 16px;
+      background: var(--green); color: #000;
+      font-size: 0.65rem; font-weight: 800; letter-spacing: 1px;
+      padding: 4px 10px; border-radius: 100px;
+    }
+    .price-name { font-size: 0.85rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .price-amount { font-size: 2.8rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 4px; }
+    .price-amount sup { font-size: 1.2rem; vertical-align: top; margin-top: 10px; }
+    .price-period { color: var(--muted); font-size: 0.85rem; margin-bottom: 28px; }
+    .price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .price-features li { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: rgba(255,255,255,0.8); }
+    .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .btn-plan {
+      width: 100%; padding: 14px;
+      border-radius: 10px; border: 1px solid var(--border);
+      background: transparent; color: white;
+      font-weight: 700; font-size: 0.95rem;
+      cursor: pointer; transition: all 0.2s; text-align: center;
+      text-decoration: none; display: block;
+    }
+    .btn-plan:hover { background: rgba(255,255,255,0.08); }
+    .btn-plan.gold {
+      background: linear-gradient(135deg, #F5C842, #FF6B35);
+      color: #000; border: none;
+    }
+    .btn-plan.gold:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(245,200,66,0.3); }
+
+    /* TESTIMONIALS / MARKETS */
+    .markets-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; max-width: 900px; margin: 0 auto;
+    }
+    .market-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .market-card:hover { border-color: rgba(245,200,66,0.3); transform: translateY(-2px); }
+    .market-flag { font-size: 2rem; margin-bottom: 8px; display: block; }
+    .market-city { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+    .market-genre { font-size: 0.78rem; color: var(--muted); }
+
+    /* FINAL CTA */
+    .final-cta {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(245,200,66,0.06), rgba(255,107,53,0.04));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 100px 24px;
+    }
+    .final-cta h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900; letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+    .final-cta p { color: var(--muted); max-width: 500px; margin: 0 auto 40px; }
+
+    /* FOOTER */
+    footer {
+      padding: 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+      border-top: 1px solid var(--border);
+    }
+    footer .logo-sm {
+      font-size: 1.1rem; font-weight: 900;
+      background: linear-gradient(135deg, #F5C842, #FF6B35);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    footer p { color: var(--muted); font-size: 0.8rem; }
+    footer nav { display: flex; gap: 20px; }
+    footer nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+    footer nav a:hover { color: white; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .perks-grid { grid-template-columns: 1fr; }
+      .founding-card { padding: 28px 20px; }
+      .platforms-section { padding: 32px 20px; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Soniq<span>Now</span></div>
+  <div class="nav-links">
+    <a href="#pillars">Platform</a>
+    <a href="#distribute">Distribution</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#markets">Markets</a>
+  </div>
+  <a href="mailto:hello@soniqnow.com?subject=Join Soniq Now - Early Access" class="nav-cta">Get Started Free →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="founding-badge">
+    <span class="dot"></span>
+    Founding Artist Program — 18 of 100 spots taken
+  </div>
+
+  <h1>The Platform<br/><span class="highlight">African Artists</span><br/>Were Waiting For</h1>
+
+  <p>Mix in Dolby Atmos. Edit your videos. Distribute to 150+ stores. Keep 100% of your royalties. All in one place — built for Africa, built for the world.</p>
+
+  <!-- FOUNDING OFFER CARD -->
+  <div class="founding-card">
+    <h2>🏆 Founding Artist Program</h2>
+    <p class="subtitle">First 100 African artists only — no credit card, no catch</p>
+
+    <div class="perks-grid">
+      <div class="perk"><span class="perk-icon">🎵</span><span>Soniq Pro <strong>free for life</strong> (normally $29/yr)</span></div>
+      <div class="perk"><span class="perk-icon">💰</span><span>Keep <strong>100% of your royalties</strong> — forever</span></div>
+      <div class="perk"><span class="perk-icon">🌍</span><span>Distribute to <strong>150+ stores</strong> worldwide</span></div>
+      <div class="perk"><span class="perk-icon">🎚️</span><span>Free <strong>Dolby Atmos</strong> mixing studio access</span></div>
+      <div class="perk"><span class="perk-icon">🎬</span><span>Free <strong>pro video editor</strong> for your music videos</span></div>
+      <div class="perk"><span class="perk-icon">📈</span><span><strong>Featured placement</strong> on Soniq Stream charts</span></div>
+      <div class="perk"><span class="perk-icon">🏅</span><span><strong>"Founding Artist" badge</strong> on your profile forever</span></div>
+      <div class="perk"><span class="perk-icon">🤝</span><span>Access to <strong>31 global producers</strong> marketplace</span></div>
+    </div>
+
+    <div class="counter-row">
+      <div class="counter-bar"><div class="counter-fill"></div></div>
+      <div class="counter-text"><strong>18/100</strong> spots taken</div>
+    </div>
+
+    <div class="cta-group">
+      <a href="mailto:hello@soniqnow.com?subject=Join Soniq Now - Early Access" class="btn-primary">Claim Your Spot Now →</a>
+      <a href="mailto:hello@soniqnow.com?subject=Join Soniq Now - Early Access" class="btn-secondary">Explore Platform</a>
+    </div>
+    <p class="no-card">✓ No credit card &nbsp;•&nbsp; ✓ No commitment &nbsp;•&nbsp; ✓ Cancel anytime</p>
+  </div>
+</section>
+
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <div class="proof-item">🌍 <strong>200+</strong> countries reached</div>
+  <div class="proof-divider"></div>
+  <div class="proof-item">🎵 <strong>150+</strong> streaming stores</div>
+  <div class="proof-divider"></div>
+  <div class="proof-item">💰 <strong>100%</strong> royalty retention</div>
+  <div class="proof-divider"></div>
+  <div class="proof-item">🎚️ <strong>Dolby Atmos</strong> studio included</div>
+  <div class="proof-divider"></div>
+  <div class="proof-item">🎬 <strong>Pro video</strong> editor included</div>
+</div>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <p class="section-label">The Platform</p>
+  <h2 class="section-title">5 Tools. One Platform.<br/>Your Whole Career.</h2>
+  <p class="section-sub">Everything an independent African artist needs — from recording to release to revenue — in one place.</p>
+
+  <div class="pillars-grid">
+    <div class="pillar-card">
+      <span class="pillar-icon">🎚️</span>
+      <h3>Soniq Studio</h3>
+      <p>Professional 12-channel mixing console with real Web Audio API. Plus a full Dolby Atmos 3D spatial mixer with 12 speaker positions.</p>
+      <div class="pillar-tags">
+        <span class="tag">12-Channel Mixer</span>
+        <span class="tag">Dolby Atmos</span>
+        <span class="tag">Beat Sequencer</span>
+        <span class="tag">3-Band EQ</span>
+      </div>
+    </div>
+
+    <div class="pillar-card">
+      <span class="pillar-icon">🎬</span>
+      <h3>Soniq Video</h3>
+      <p>8-track NLE timeline, color grading, effects library, and inspector panel. Edit your music videos like a pro — no software to install.</p>
+      <div class="pillar-tags">
+        <span class="tag">8-Track Timeline</span>
+        <span class="tag">Color Grade</span>
+        <span class="tag">Effects Library</span>
+        <span class="tag">1080p Export</span>
+      </div>
+    </div>
+
+    <div class="pillar-card">
+      <span class="pillar-icon">🌍</span>
+      <h3>Soniq Market</h3>
+      <p>Hire from 31 producers across 30+ countries — Lagos, London, Tokyo, Toronto. Post jobs across 14 categories and build your team globally.</p>
+      <div class="pillar-tags">
+        <span class="tag">31 Producers</span>
+        <span class="tag">14 Categories</span>
+        <span class="tag">Jobs Board</span>
+        <span class="tag">Global Creatives</span>
+      </div>
+    </div>
+
+    <div class="pillar-card">
+      <span class="pillar-icon">🚀</span>
+      <h3>Soniq Distribute</h3>
+      <p>Release your music to 150+ stores in 200+ countries. Track streams, earnings, and analytics by country. You keep every dollar.</p>
+      <div class="pillar-tags">
+        <span class="tag">150+ Stores</span>
+        <span class="tag">Analytics</span>
+        <span class="tag">100% Royalties</span>
+        <span class="tag">200+ Countries</span>
+      </div>
+    </div>
+
+    <div class="pillar-card">
+      <span class="pillar-icon">📻</span>
+      <h3>Soniq Stream</h3>
+      <p>Discover new music on Soniq Top 50 Global charts, 6 live radio stations, and 8 mood playlists. Your music, your listeners, your chart.</p>
+      <div class="pillar-tags">
+        <span class="tag">Top 50 Charts</span>
+        <span class="tag">6 Radio Stations</span>
+        <span class="tag">8 Mood Playlists</span>
+        <span class="tag">Discovery</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISTRIBUTION -->
+<section id="distribute" style="padding: 40px 24px 80px;">
+  <div class="platforms-section">
+    <p class="section-label" style="margin-bottom:12px;">Distribution</p>
+    <h2 class="section-title" style="font-size:2rem; margin-bottom:12px;">Your Music. Everywhere.</h2>
+    <p style="color:var(--muted); font-size:0.95rem;">One upload. 150+ stores. 200+ countries. You keep 100% of what you earn.</p>
+    <div class="platforms-grid">
+      <div class="platform-pill"><span class="platform-dot" style="background:#1DB954"></span>Spotify</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#FC3C44"></span>Apple Music</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#00BCD4"></span>Tidal</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#FF0000"></span>YouTube Music</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#00A8E0"></span>Amazon Music</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#EF5466"></span>Deezer</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#0073E6"></span>Pandora</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#FF5500"></span>SoundCloud</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#00C77F"></span>Boomplay</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#FE6D00"></span>Audiomack</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#FF6B35"></span>Beatport</div>
+      <div class="platform-pill"><span class="platform-dot" style="background:#8B5CF6"></span>+140 more</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <p class="section-label">How It Works</p>
+  <h2 class="section-title">From Zero to Streaming<br/>in 4 Steps</h2>
+  <p class="section-sub">No paperwork. No middlemen. Just your music reaching the world.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Claim your Founding Artist spot</h3>
+        <p>Sign up for free — no credit card needed. Get lifetime Pro access as one of the first 100 African artists on the platform.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Create in the studio</h3>
+        <p>Mix your tracks in Soniq Studio. Add Dolby Atmos spatial audio. Edit your music video in Soniq Video — all in your browser.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Distribute everywhere</h3>
+        <p>Upload once. We push your music to Spotify, Apple Music, Boomplay, Audiomack, and 146 more stores across 200+ countries.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Get paid. Keep everything.</h3>
+        <p>Royalties flow directly to your bank account. We never take a cut. Track every stream and every dollar in your analytics dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETS -->
+<section id="markets">
+  <p class="section-label">Target Markets</p>
+  <h2 class="section-title">Built for Every<br/>African Sound</h2>
+  <p class="section-sub">From Afrobeats in Lagos to Amapiano in Johannesburg — Soniq Now was built for you.</p>
+
+  <div class="markets-grid">
+    <div class="market-card"><span class="market-flag">🇳🇬</span><div class="market-city">Lagos, Nigeria</div><div class="market-genre">Afrobeats · Afro-fusion</div></div>
+    <div class="market-card"><span class="market-flag">🇬🇭</span><div class="market-city">Accra, Ghana</div><div class="market-genre">Highlife · Drill · Afrobeats</div></div>
+    <div class="market-card"><span class="market-flag">🇰🇪</span><div class="market-city">Nairobi, Kenya</div><div class="market-genre">Gengetone · Afro-pop</div></div>
+    <div class="market-card"><span class="market-flag">🇿🇦</span><div class="market-city">Johannesburg, SA</div><div class="market-genre">Amapiano · Hip-Hop</div></div>
+    <div class="market-card"><span class="market-flag">🇿🇦</span><div class="market-city">Cape Town, SA</div><div class="market-genre">Amapiano · House</div></div>
+    <div class="market-card"><span class="market-flag">🇷🇼</span><div class="market-city">Kigali, Rwanda</div><div class="market-genre">Afro-fusion</div></div>
+    <div class="market-card"><span class="market-flag">🇸🇳</span><div class="market-city">Dakar, Senegal</div><div class="market-genre">Mbalax · Afro-trap</div></div>
+    <div class="market-card"><span class="market-flag">🇺🇬</span><div class="market-city">Kampala, Uganda</div><div class="market-genre">Afro-house</div></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <p class="section-label">Pricing</p>
+  <h2 class="section-title">Simple. Transparent.<br/>No Hidden Fees.</h2>
+  <p class="section-sub">Founding artists get Pro free for life. Everyone else pays only for what they use.</p>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-name">Starter</div>
+      <div class="price-amount"><sup>$</sup>9</div>
+      <div class="price-period">per release</div>
+      <ul class="price-features">
+        <li>1 release per purchase</li>
+        <li>150+ streaming stores</li>
+        <li>100% royalty retention</li>
+        <li>Basic analytics</li>
+        <li>Soniq Studio access</li>
+      </ul>
+      <a href="mailto:hello@soniqnow.com?subject=Join Soniq Now - Early Access" class="btn-plan">Get Started</a>
+    </div>
+
+    <div class="price-card featured">
+      <div class="price-name">Pro</div>
+      <div class="price-amount"><sup>$</sup>29</div>
+      <div class="price-period">per year · unlimited releases</div>
+      <ul class="price-features">
+        <li>Unlimited releases</li>
+        <li>150+ streaming stores</li>
+        <li>100% royalty retention</li>
+        <li>Full analytics + country data</li>
+        <li>Dolby Atmos studio</li>
+        <li>Pro video editor</li>
+        <li>Soniq Market access</li>
+      </ul>
+      <a href="mailto:hello@soniqnow.com?subject=Join Soniq Now - Early Access" class="btn-plan gold">Get Pro →</a>
+    </div>
+
+    <div class="price-card">
+      <span class="founding-free">FREE FOR LIFE</span>
+      <div class="price-name">Founding Artist</div>
+      <div class="price-amount"><sup>$</sup>0</div>
+      <div class="price-period">forever · first 100 only</div>
+      <ul class="price-features">
+        <li>Everything in Pro — free forever</li>
+        <li>Founding Artist badge</li>
+        <li>Featured on Soniq Stream</li>
+        <li>Priority support</li>
+        <li>Early access to all new features</li>
+        <li>Private founding artists group</li>
+      </ul>
+      <a href="mailto:hello@soniqnow.com?subject=Join Soniq Now - Early Access" class="btn-plan gold">Claim Spot →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="final-cta">
+  <h2>Africa Built This.<br/><span style="background:linear-gradient(135deg,#F5C842,#FF6B35);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">The World Will Hear It.</span></h2>
+  <p>82 founding artist spots still available. No credit card. No catch. Just your music reaching the world.</p>
+  <div class="cta-group" style="justify-content:center;">
+    <a href="mailto:hello@soniqnow.com?subject=Join Soniq Now - Early Access" class="btn-primary" style="font-size:1.1rem; padding:18px 44px;">Claim Your Free Spot →</a>
+  </div>
+  <p style="color:var(--muted); font-size:0.8rem; margin-top:16px;">✓ Free for life &nbsp;•&nbsp; ✓ No credit card &nbsp;•&nbsp; ✓ 18 of 100 spots taken</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo-sm">SoniqNow</div>
+  <p>© 2026 Soniq Now. Built for African artists. Built for the world.</p>
+  <nav>
+    <a href="mailto:hello@soniqnow.com?subject=Join Soniq Now - Early Access">Platform</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#distribute">Distribution</a>
+    <a href="mailto:hello@soniqnow.com">Contact</a>
+  </nav>
+</footer>
+
+</body>
+</html>
